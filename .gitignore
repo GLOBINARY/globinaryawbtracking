@@ -1,0 +1,13 @@
+.DS_Store
+**/.DS_Store
+
+# Build artifacts
+dist/*.zip
+
+# Local data dumps
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# Large binary docs kept out of source by default
+data/*.pdf
