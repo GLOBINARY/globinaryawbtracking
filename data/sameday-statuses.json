@@ -1,0 +1,772 @@
+{
+    "total": 99,
+    "currentPage": 1,
+    "pages": 1,
+    "perPage": 500,
+    "data": [
+        {
+            "id": 1,
+            "label": "Expedierea a fost înregistrată."
+        },
+        {
+            "id": 3,
+            "label": "Rambursul a fost transferat."
+        },
+        {
+            "id": 4,
+            "label": "Coletul a fost ridicat."
+        },
+        {
+            "id": 5,
+            "label": "Coletul este în tranzit internațional și va ajunge curând în țară."
+        },
+        {
+            "id": 6,
+            "label": "Coletul a ajuns în agenția locală și urmează să fie pregătit de livrare."
+        },
+        {
+            "id": 7,
+            "label": "Coletul este în drum spre depozitul central."
+        },
+        {
+            "id": 9,
+            "label": "Coletul a fost livrat cu succes."
+        },
+        {
+            "id": 10,
+            "label": "Nu am reușit să livrăm coletul. Revenim cu detalii sau o nouă încercare.",
+            "reasons": [
+                {
+                    "name": "Recipient requests delivery at a later date",
+                    "id": 1
+                },
+                {
+                    "name": "Recipient not found on first delivery attempt",
+                    "id": 3
+                },
+                {
+                    "name": "Recipient has no cash for payment",
+                    "id": 6
+                },
+                {
+                    "name": "Access to location blocked",
+                    "id": 10
+                },
+                {
+                    "name": "Recipient requests delivery to another address",
+                    "id": 13
+                },
+                {
+                    "name": "Recipient not found on second delivery attempt",
+                    "id": 15
+                },
+                {
+                    "name": "Telefon gresit, nu se poate intra in locatie",
+                    "id": 16
+                },
+                {
+                    "name": "Phone is off",
+                    "id": 17
+                },
+                {
+                    "name": "Waiting for locker loading",
+                    "id": 44
+                },
+                {
+                    "name": "Same-day delivery rescheduling",
+                    "id": 129
+                },
+                {
+                    "name": "Delivery POS",
+                    "id": 176
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "label": "Coletul a fost refuzat la livrare.",
+            "reasons": [
+                {
+                    "name": "Order cancelled",
+                    "id": 9
+                },
+                {
+                    "name": "The recipient refuses to present the ID",
+                    "id": 14
+                },
+                {
+                    "name": "Payment refused",
+                    "id": 24
+                },
+                {
+                    "name": "Damaged product",
+                    "id": 25
+                },
+                {
+                    "name": "Parcel refused after opening",
+                    "id": 26
+                },
+                {
+                    "name": "Unrequested shipment",
+                    "id": 27
+                },
+                {
+                    "name": "Missing exchange parcel",
+                    "id": 45
+                },
+                {
+                    "name": "Damaged packaging",
+                    "id": 47
+                },
+                {
+                    "name": "Client’s subjective reasons",
+                    "id": 51
+                },
+                {
+                    "name": "Recipient refuses to present ID",
+                    "id": 136
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "label": "Așteptăm toate coletele din comandă."
+        },
+        {
+            "id": 15,
+            "label": "Expedierea a fost anulată."
+        },
+        {
+            "id": 16,
+            "label": "Ți-am returnat coletul cu succes."
+        },
+        {
+            "id": 17,
+            "label": "Destinatarul a solicitat redirecționarea coletului la o altă adresă de livrare."
+        },
+        {
+            "id": 18,
+            "label": "Așteptăm ridicarea tuturor coletelor."
+        },
+        {
+            "id": 19,
+            "label": "Coletul nu mai poate fi livrat. Vom aplica o despăgubire totală."
+        },
+        {
+            "id": 20,
+            "label": "Coletul nu mai poate fi livrat. Vom aplica o despăgubire parțială."
+        },
+        {
+            "id": 23,
+            "label": "Un curier a fost alocat pentru ridicarea coletelor."
+        },
+        {
+            "id": 25,
+            "label": "Coletul se afla in depozitul local.",
+            "reasons": [
+                {
+                    "name": "Area sorting",
+                    "id": 133
+                },
+                {
+                    "name": "Sorting without micro-zoning",
+                    "id": 134
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "label": "Coletul este în depozitul local."
+        },
+        {
+            "id": 29,
+            "label": "Coletul îți va fi returnat."
+        },
+        {
+            "id": 33,
+            "label": "Curierul urmează să efectueze livrarea în curând."
+        },
+        {
+            "id": 34,
+            "label": "Coletele sunt pregătite pentru ridicare."
+        },
+        {
+            "id": 35,
+            "label": "Coletul îți va fi returnat."
+        },
+        {
+            "id": 37,
+            "label": "Coletul se află în depozitul central și este pregătit pentru consolidare."
+        },
+        {
+            "id": 38,
+            "label": "Coletul a fost ridicat ambalat de către curier."
+        },
+        {
+            "id": 39,
+            "label": "Coletele au fost transferate la destinație."
+        },
+        {
+            "id": 43,
+            "label": "Rambursul a fost transferat în contul expeditorului."
+        },
+        {
+            "id": 46,
+            "label": "Ți-am returnat coletul cu succes."
+        },
+        {
+            "id": 47,
+            "label": "Adresa de livrare asociată coletului este eronată.",
+            "reasons": [
+                {
+                    "name": "Unknown company at delivery address",
+                    "id": 18
+                },
+                {
+                    "name": "Unknown person at delivery address",
+                    "id": 19
+                },
+                {
+                    "name": "Wrong street",
+                    "id": 20
+                },
+                {
+                    "name": "Wrong city",
+                    "id": 21
+                }
+            ]
+        },
+        {
+            "id": 48,
+            "label": "Adresa de livrare asociată coletului este eronată."
+        },
+        {
+            "id": 49,
+            "label": "Coletul este în proces de analiză pentru despăgubire. Revenim cu vești."
+        },
+        {
+            "id": 51,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 53,
+            "label": "Despăgubirea a fost facturată."
+        },
+        {
+            "id": 54,
+            "label": "Despăgubirea a fost refuzată."
+        },
+        {
+            "id": 55,
+            "label": "Livrarea nu s-a putut efectua din cauza condițiilor nefavorabile de expediere.",
+            "reasons": [
+                {
+                    "name": "Unfavorable weather",
+                    "id": 22
+                },
+                {
+                    "name": "Inaccessible road",
+                    "id": 23
+                },
+                {
+                    "name": "Risk area",
+                    "id": 117
+                }
+            ]
+        },
+        {
+            "id": 56,
+            "label": "Coletul este în drum spre depozitul local."
+        },
+        {
+            "id": 62,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 63,
+            "label": "Coletul a ajuns în depozitul central."
+        },
+        {
+            "id": 64,
+            "label": "Coletul nu a plecat încă spre depozitul local. Poate întârzia puțin."
+        },
+        {
+            "id": 65,
+            "label": "Din păcate, vom întârzia livrarea. Reluăm procesul în curând."
+        },
+        {
+            "id": 68,
+            "label": "Destinatarul a solicitat ridicarea din agenție.",
+            "reasons": [
+                {
+                    "name": "Ready for pickup",
+                    "id": 173
+                },
+                {
+                    "name": "Client Request",
+                    "id": 174
+                }
+            ]
+        },
+        {
+            "id": 73,
+            "label": "Vom încerca ridicarea coletului la o dată ulterioară.",
+            "reasons": [
+                {
+                    "name": "Requests pickup on another date",
+                    "id": 32
+                },
+                {
+                    "name": "Missing PPR packaging",
+                    "id": 93
+                }
+            ]
+        },
+        {
+            "id": 74,
+            "label": "Ridicarea nu a avut loc, coletul nu a fost predat de expeditor.",
+            "reasons": [
+                {
+                    "name": "Nothing to send",
+                    "id": 34
+                }
+            ]
+        },
+        {
+            "id": 75,
+            "label": "Ți-am returnat coletul cu succes."
+        },
+        {
+            "id": 78,
+            "label": "Coletul a fost încărcat în punctul de livrare."
+        },
+        {
+            "id": 79,
+            "label": "Termenul de păstrare a coletului în punctul de ridicare a expirat."
+        },
+        {
+            "id": 81,
+            "label": "Coletul a fost ridicat din punctul de livrare și îți va fi returnat."
+        },
+        {
+            "id": 82,
+            "label": "Coletul are ambalajul deteriorat, dar va fi livrat fără intervenția ta.",
+            "reasons": [
+                {
+                    "name": "Reduced risk",
+                    "id": 97
+                },
+                {
+                    "name": "Severe risk",
+                    "id": 98
+                }
+            ]
+        },
+        {
+            "id": 83,
+            "label": "Din păcate, coletul a fost deteriorat și nu mai poate fi livrat."
+        },
+        {
+            "id": 84,
+            "label": "Coletul se află în depozitul central și urmează să fie procesat."
+        },
+        {
+            "id": 87,
+            "label": "Coletul se află în procesul de redirecționare la adresă.",
+            "reasons": [
+                {
+                    "name": "Parcel too large",
+                    "id": 94
+                },
+                {
+                    "name": "Lack of capacity",
+                    "id": 95
+                },
+                {
+                    "name": "Defective locker",
+                    "id": 96
+                },
+                {
+                    "name": "Door opening incident",
+                    "id": 116
+                },
+                {
+                    "name": "At client’s request",
+                    "id": 130
+                },
+                {
+                    "name": "Incorrectly issued order",
+                    "id": 135
+                },
+                {
+                    "name": "PUDO unavailable",
+                    "id": 161
+                },
+                {
+                    "name": "Automatic revert",
+                    "id": 175
+                }
+            ]
+        },
+        {
+            "id": 90,
+            "label": "Coletul nu a fost ridicat. Vom încerca din nou preluarea.",
+            "reasons": [
+                {
+                    "name": "Courier’s fault",
+                    "id": 157
+                },
+                {
+                    "name": "Non-compliant packaging / package",
+                    "id": 158
+                }
+            ]
+        },
+        {
+            "id": 93,
+            "label": "Coletul se află în curs de returnare."
+        },
+        {
+            "id": 94,
+            "label": "Produsul a fost casat din cauza deteriorării și nu mai poate fi livrat."
+        },
+        {
+            "id": 96,
+            "label": "Coletul îți va fi returnat."
+        },
+        {
+            "id": 97,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 98,
+            "label": "Din păcate, vom întârzia livrarea. Reluăm procesul în curând.",
+            "reasons": [
+                {
+                    "name": "Inventory",
+                    "id": 60
+                },
+                {
+                    "name": "Overload",
+                    "id": 61
+                },
+                {
+                    "name": "Incorrect sorting",
+                    "id": 62
+                },
+                {
+                    "name": "Damaged",
+                    "id": 64
+                },
+                {
+                    "name": "Wrong return agency",
+                    "id": 65
+                },
+                {
+                    "name": "Wrong delivery agency",
+                    "id": 66
+                },
+                {
+                    "name": "Awaiting ticket response",
+                    "id": 67
+                },
+                {
+                    "name": "Contacted from depot",
+                    "id": 68
+                },
+                {
+                    "name": "Delayed delivery",
+                    "id": 69
+                },
+                {
+                    "name": "Agency capacity exceeded",
+                    "id": 70
+                },
+                {
+                    "name": "Scanning alert",
+                    "id": 87
+                },
+                {
+                    "name": "Parcels arrived at HUB after cut-off (LH fault)",
+                    "id": 88
+                },
+                {
+                    "name": "Incorrect hub sorting",
+                    "id": 131
+                },
+                {
+                    "name": "Waiting for HD recipient address",
+                    "id": 137
+                },
+                {
+                    "name": "Package identified at agency",
+                    "id": 139
+                }
+            ]
+        },
+        {
+            "id": 99,
+            "label": "Punctul de livrare este aglomerat.",
+            "reasons": [
+                {
+                    "name": "Lack of capacity",
+                    "id": 76
+                },
+                {
+                    "name": "Lack of internet",
+                    "id": 141
+                },
+                {
+                    "name": "Closed location",
+                    "id": 142
+                }
+            ]
+        },
+        {
+            "id": 100,
+            "label": "Din păcate, coletul nu este disponibil pentru livrare.",
+            "reasons": [
+                {
+                    "name": "Package processed with another awb",
+                    "id": 167
+                },
+                {
+                    "name": "Double-labeled package",
+                    "id": 168
+                },
+                {
+                    "name": "Return is not loaded in the box",
+                    "id": 169
+                },
+                {
+                    "name": "Final status in the destination country",
+                    "id": 171
+                }
+            ]
+        },
+        {
+            "id": 101,
+            "label": "Punctul de livrare este nefuncțional.",
+            "reasons": [
+                {
+                    "name": "Display issues",
+                    "id": 52
+                },
+                {
+                    "name": "Scanner blocked",
+                    "id": 53
+                },
+                {
+                    "name": "Power outage",
+                    "id": 54
+                },
+                {
+                    "name": "Assigned box won’t open",
+                    "id": 55
+                }
+            ]
+        },
+        {
+            "id": 106,
+            "label": "easybox-ul este aglomerat. Vom încerca să încărcăm coletul când se eliberează."
+        },
+        {
+            "id": 107,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 110,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 111,
+            "label": "Expedierea a fost anulată.",
+            "reasons": [
+                {
+                    "name": "Expiry date exceeded",
+                    "id": 73
+                },
+                {
+                    "name": "Cancelled by sender at locker",
+                    "id": 74
+                }
+            ]
+        },
+        {
+            "id": 112,
+            "label": "Coletul returnat a fost încărcat în easybox și va fi preluat curând de curier."
+        },
+        {
+            "id": 113,
+            "label": "Curierul a ridicat coletul returnat din easybox."
+        },
+        {
+            "id": 119,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 120,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 124,
+            "label": "Rambursul a fost plătit, dar livrarea nu a fost finalizată."
+        },
+        {
+            "id": 125,
+            "label": "Coletul nu a fost găsit în punctul de ridicare. Investigăm situația și revenim."
+        },
+        {
+            "id": 127,
+            "label": "Livrarea a fost reprogramată la cererea destinatarului.",
+            "reasons": [
+                {
+                    "name": "Not at the address today",
+                    "id": 89
+                },
+                {
+                    "name": "No cash for reimbursement",
+                    "id": 91
+                }
+            ]
+        },
+        {
+            "id": 128,
+            "label": "Livrarea a fost anulată la cererea destinatarului.",
+            "reasons": [
+                {
+                    "name": "No longer wish to order",
+                    "id": 90
+                }
+            ]
+        },
+        {
+            "id": 132,
+            "label": "Coletul a fost ridicat neambalat de către curier."
+        },
+        {
+            "id": 135,
+            "label": "Coletul a fost predat curierului partener."
+        },
+        {
+            "id": 137,
+            "label": "Coletul a fost redirecționat la alt punct de ridicare."
+        },
+        {
+            "id": 141,
+            "label": "Coletul a fost redirectionat la un punct de livrare."
+        },
+        {
+            "id": 142,
+            "label": "Rambursul nu a fost transferat, este blocat pentru compensarea soldului datorat."
+        },
+        {
+            "id": 143,
+            "label": "O parte din ramburs a fost compensată, restul va fi transferat."
+        },
+        {
+            "id": 144,
+            "label": "Rambursul a fost compensat conform soldului datorat."
+        },
+        {
+            "id": 145,
+            "label": "Coletul a fost ridicat de către curier din punctul de predare."
+        },
+        {
+            "id": 146,
+            "label": "Am înregistrat plata pentru serviciul de livrare.",
+            "reasons": [
+                {
+                    "name": "Plata din MobileAPP",
+                    "id": 162
+                },
+                {
+                    "name": "Discount",
+                    "id": 163
+                },
+                {
+                    "name": "Payment from LockerAPP",
+                    "id": 172
+                }
+            ]
+        },
+        {
+            "id": 147,
+            "label": "Coletul tău va intra curând în posesia noastră."
+        },
+        {
+            "id": 149,
+            "label": "Coletul a fost livrat cu succes."
+        },
+        {
+            "id": 151,
+            "label": "Expedierea a fost anulată."
+        },
+        {
+            "id": 152,
+            "label": "Expedierea a fost anulată."
+        },
+        {
+            "id": 153,
+            "label": "Expeditorul a refuzat predarea coletului în țara de ridicare."
+        },
+        {
+            "id": 154,
+            "label": "Coletul a fost returnat în țara din care a fost ridicat."
+        },
+        {
+            "id": 155,
+            "label": "Din păcate, coletul nu poate fi localizat. Revenim cu vești."
+        },
+        {
+            "id": 157,
+            "label": "Coletul se află în depozitul central."
+        },
+        {
+            "id": 160,
+            "label": "Coletul returnat te așteaptă să-l ridici din easybox-ul în care l-ai predat."
+        },
+        {
+            "id": 165,
+            "label": "Avizat expeditor C2C"
+        },
+        {
+            "id": 166,
+            "label": "Coletul a fost încărcat în punctul de livrare."
+        },
+        {
+            "id": 178,
+            "label": "Expedierea a fost anulată."
+        },
+        {
+            "id": 180,
+            "label": "Coletul a fost ridicat de la client din easybox."
+        },
+        {
+            "id": 181,
+            "label": "Adresa de livrare asociată coletului este eronată.",
+            "reasons": [
+                {
+                    "name": "Wrong/incomplete address",
+                    "id": 160
+                }
+            ]
+        },
+        {
+            "id": 183,
+            "label": "Coletul se află în depozitul local și urmează a fi procesat în curând."
+        },
+        {
+            "id": 187,
+            "label": "Coletul a fost ridicat de la partenerul din tara de origine."
+        },
+        {
+            "id": 188,
+            "label": "Coletul se afla in depozitul partenerului din tara de origine."
+        },
+        {
+            "id": 189,
+            "label": "Coletul este in drum spre depozitul central."
+        }
+    ]
+}
