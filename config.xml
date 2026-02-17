@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+  <name>globinaryawbtracking</name>
+  <displayName><![CDATA[GLOBINARY AWB România]]></displayName>
+  <version><![CDATA[1.6.9]]></version>
+  <description><![CDATA[AWB multi-curier, urmărire colete, sincronizare status și actualizare comenzi pentru România — gestionat integral în PrestaShop.]]></description>
+  <author><![CDATA[Globinary]]></author>
+  <tab><![CDATA[shipping_logistics]]></tab>
+  <is_configurable>1</is_configurable>
+  <need_instance>0</need_instance>
+  <limited_countries></limited_countries>
+</module>

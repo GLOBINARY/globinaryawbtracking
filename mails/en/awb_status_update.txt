@@ -1,0 +1,13 @@
+Hello, {firstname} {lastname}!
+
+Your order #{order_id} has been updated.
+{message}
+
+Tracking:
+{awb_list}
+
+Order details: {order_url}
+Your account: {customer_account_url}
+
+Thank you,
+{shop_name}

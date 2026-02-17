@@ -1,0 +1,13 @@
+Buna, {firstname} {lastname}!
+
+Comanda ta #{order_id} a fost actualizata.
+{message}
+
+Tracking:
+{awb_list}
+
+Detalii comanda: {order_url}
+Contul tau: {customer_account_url}
+
+Multumim,
+{shop_name}

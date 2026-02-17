@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order update</title>
+</head>
+<body>
+<div style="font-family: Arial, sans-serif; color: #333;">
+    <h2>Hello, {firstname} {lastname}!</h2>
+    <p>Your order #{order_id} has been updated.</p>
+    <p><strong>{message}</strong></p>
+    <div>
+        <h4>Tracking:</h4>
+        {awb_list}
+    </div>
+    <p>
+        You can view your order details here:
+        <a href="{order_url}">{order_url}</a>
+    </p>
+    <p>
+        Your account: <a href="{customer_account_url}">{customer_account_url}</a>
+    </p>
+    <p>Thank you,<br>{shop_name}</p>
+</div>
+</body>
+</html>
