@@ -1,0 +1,973 @@
+API Restful Dragon Star Curier
+API-ul DragonStar este un serviciu suplimentar oferit gratuit clientilor companiei, pentru
+facilitarea emiterii documentelor de identificare a expeditiilor, respectiv a documentelor de
+transport (AWB). Aceasta aplicatie realizeaza interconectarea dintre aplicatia informatica a
+clientului (de tip ERP, CRM, WMS etc.) si aplicatia informatica de curierat a companiei DSC
+EXPRES LOGISTIC.
+Astfel: clientul introduce datele referitoare la o expeditie in aplicatia informatica proprie
+(unde are informatiile referitoare la destinatar si expeditie) si automat se genereaza un AWB
+in aplicatia DragonStar.
+Acest serviciu permite urmatoarele:
+ generarea de AWB-uri
+ obtinerea formei printabile a unui AWB
+ obtinerea de date referitoare la judete, localitati si tarife
+ crearea de borderouri
+ obtinerea unei liste de expeditii pentru un anumit borderou
+crearea de comanda de ridicare curier
+Beneficiile aduse de utilizarea unui astfel de serviciu sunt:
+ scurtarea procesului de etichetare a expeditiilor
+ consolidarea informatiilor privind expeditiile: nu trebuie facute verificari in 2
+aplicatii pentru concilierea datelor
+ obtinerea unui document de transport usor de citit, datorita evitarii scrisului « de
+mana »
+
+Addendum
+Abstract : (referinta pagina: 17 )
+Un client al companiei are unul sau mai multe puncte de lucru ( sucursale ) ce sunt in
+localitati diferite si au adrese diferite. Clientul, pe care in continuare o sa il denumim « master
+», doreste sa introduca expeditii pentru punctele lui de lucru : expeditia are ca si expeditor un
+« punct de lucru », identificat cu pcId = id-ul punctului de lucru la Curier Dragon Star. Acest
+lucru nu era posibil cu metoda POST /awb/send (vezi si GET /master/pcs)
+Adaugarea punctelor de lucru se face exclusiv in baza unei cereri la departamentul
+Customer Service prin email comenzi@curierdragonstar.ro
+
+Metode print ZPL
+Abstract : (referinta pagina: 22 )
+Pentru printare zpl (etichete 100x150) 203dpi, metoda returneaza un singur label in limbaj
+ZPL ( zebra il printeaza mult mai repede !!! decat PDF)
+
+Apendix metode : (referinta pagina: 23 )
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+1
+
+Documentatie tehnica
+URL : https://app.curierdragonstar.ro
+SSL + IP : required
+Authentication : application-only
+Fiecare request trebuie sa includa :
+un header Authorization cu valoarea Basic <base64 user:password>
+un header Content-Type
+
+Resurse :
+GET /judete : are ca rezultat obtinerea listei de judete din Romania
+Request :
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body
+ {rezultate:42,judete:{"AB":"Alba",...,"VS":"Vaslui"}}
+ Parameters
+o rezultate : numeric
+o judete : associative array
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+2
+
+GET /localitati/:judet : are ca rezultat obtinerea listei de localitati din judetul cu codul
+«:judet »
+Request :
+ Parameters
+ judet : required : string
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body
+ {"rezultate":184, "judet":"GL","localitati":["Adam",...,"Zimbru"]}
+ Parameters
+o rezultate : numeric
+o judet : string
+o localitati : array
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+3
+
+GET /localitatikm/:judet : returneaza o lista de localitati si km exteriori pentru judetul :judet
+variabila :judet este codul de judet pe 2 litere : ex. GL
+Request :
+ Parameters
+ judet : required : string
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body
+ {"rezultate":184, "judet":"GL","localitati":["Adam:km",...,"Zimbru:km"],”}
+ Parameters
+o rezultate : numeric
+o judet : string
+o localitati:km : array
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+4
+
+POST /awb/send : are ca rezultat introducerea unei noi expeditii in baza de date si obtinerea numarului
+de AWB
+Request :
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/json
+ Request body
+ {"judet":"", "localitate":"", "destinatar":"", "contact":"", "telefon":"", "adresa":"",
+"tipExpeditie":"", "nrColete":"", "greutate":"", "platitorEsteDestinatarul":"",
+"valoareRamburs":"", "tipPlata":"", "valoareAsigurare":"", "ret_doc":"", "ret_nt":"",
+"ret_amb":"","tarifUrgenta":"", "tarifSambata":"",
+"livrareSediu":"","observatii":"","deschidereColet":"","sms",""}
+ Parameters
+o judet : required : string
+o localitate : required : string
+o destinatar : required : string
+o contact : optional : string
+o telefon : required : string
+o adresa : required : string
+o tipExpeditie : required : fixed : plic | colet | palet
+o nrColete : required if tipExpeditie = colet: numeric
+o greutate : required if tipExpeditie = colet | palet: numeric
+o platitorEsteDestinatarul : optional : fixed : 0 | 1 : default : 0
+o valoareRamburs : optional : decimal : default : 0.00
+o tipPlata : optional : fixed : cash | bo | cec | cont : default : cash
+o valoareAsigurare : optional : decimal : default : 0.00
+o ret_doc : optional : fixed : 0 | 1 : default : 0
+o ret_nt : optional : fixed : 0 | 1 : default : 0
+o ret_amb : optional : fixed : 0 | 1 : default : 0
+o tarifUrgenta : optional : fixed : 0 | 1 : default : 0
+o tarifSambata : optional : fixed : 0 | 1 : default : 0
+o livrareSediu : optional : fixed : 0 | 1 : default : 0
+o observatii : optional : string
+o deschidereColet : optional : fixed : 0 | 1 : default : 0
+o sms : optional : fixed : 0 | 1 : default : 0
+Response :
+ Status : 201
+ Response header
+ Content-type : application/json
+ Response body
+ {"awb":60872649,"total_net":52.58}
+ Parameters
+o awb : numeric
+o total_net : decimal
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+5
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+6
+
+POST /awb/cost : are ca rezultat obtinerea costurilor de expeditie
+Request :
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/json
+ Request body
+ {"judet":"", "localitate":"", "destinatar":"", "tipExpeditie":"", "nrColete":"", "greutate":"",
+"platitorEsteDestinatarul":"", "valoareRamburs":"", "tipPlata":"", "valoareAsigurare":"",
+"ret_doc":"", "ret_nt":"", "ret_amb":"", "tarifUrgenta":"", "tarifSambata":"",
+"livrareSediu":"","deschidereColet","","sms",""}
+ Parameters
+o judet : required : string
+o localitate : required : string
+o destinatar : required : string
+o tipExpeditie : required : fixed : plic | colet | palet
+o nrColete : required if tipExpeditie = colet: numeric
+o greutate : required if tipExpeditie = colet | palet: numeric
+o platitorEsteDestinatarul : optional : fixed : 0 | 1 : default : 0
+o valoareRamburs : optional : decimal : default : 0.00
+o tipPlata : optional : fixed : cash | bo | cec | cont : default : cash
+o valoareAsigurare : optional : decimal : default : 0.00
+o ret_doc : optional : fixed : 0 | 1 : default : 0
+o ret_nt : optional : fixed : 0 | 1 : default : 0
+o ret_amb : optional : fixed : 0 | 1 : default : 0
+o tarifUrgenta : optional : fixed : 0 | 1 : default : 0
+o tarifSambata : optional : fixed : 0 | 1 : default : 0
+o livrareSediu : optional : fixed : 0 | 1 : default : 0
+o observatii : optional : string
+o deschidereColet : optional : fixed : 0 | 1 : default : 0
+o sms : optional : fixed : 0 | 1 : default : 0
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body
+ {"baza":9,"costKm":18.4,"costGreutate":13,"costAsigurare":2,
+"esteTarifStandard":0,"tva":10.18,"totalNet":52.58}
+ Parameters
+o baza: decimal
+o costKm: decimal
+o costGreutate: decimal
+o costAsigurare: decimal
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+7
+
+o esteTarifStandard: fixed : 0 | 1
+o tva: decimal
+o totalNet: decimal
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+8
+
+GET /awb/print/:awb : are ca rezultat obtinerea pdf-ului
+Request :
+ Parameters
+ awb : required : numeric
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/pdf
+ Response body : un stream pdf
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : application/json
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+9
+
+DELETE /awb/:awb : are ca rezultat stergerea awb-ului daca nu s-a creat borderou si daca timpul scurs
+de la introducerea respectivei expeditii nu depaseste 30 minute
+Request :
+ Parameters
+ awb : required : numeric
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "deleted"
+
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+10
+
+POST /borderou/make : are ca rezultat crearea unui borderou
+Request :
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/json
+Response :
+ Status : 201
+ Response header
+ Content-type : application/json
+ Response body
+ {"borderou":6,"nrExpeditii":10}
+ Parameters
+o borderou: numeric
+o nrExpeditii : numeric
+
+
+
+
+
+
+
+
+Status : 200
+Response header
+ Content-type : application/json
+Response body
+ Parameters
+o message : "Nici o expeditie fara borderou : nothing to do"
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+ Status : 400
+ Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : application/json
+Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+11
+
+GET /borderou/print/:borderou : are ca rezultat obtinerea pdf-ului borderoului cu numarul :borderou
+Request :
+ Parameters
+ borderou: required : numeric
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/pdf
+ Response body : un stream pdf
+
+
+
+
+Status : 404
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : "not found"
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+12
+
+GET /awb/status/:awb : are ca rezultat obtinerea ultimului status pentru expeditia cu numarul «:awb»
+Request :
+ Parameters
+ awb : required : numeric
+ Request header
+ Authorization: Basic <base64 user:password>
+ Content-Type: application/x-www-form-urlencoded
+Response :
+ Status : 200
+ Response header
+ Content-type : application/json
+ Response body {"data":"2014-09-09 17:20:10","status":"Editare
+NT" ,"detalii":{"data":"2014-09-09 11:55:56","eveniment":"Intrare Centru",
+"centru":"CRAIOVA"}}
+ Parameters
+o data : date('Y-m-d H:m:s')
+o status : string
+o detalii : array
+ data : date('Y-m-d H:m:s')
+ eveniment : string
+ centru : string
+
+
+
+
+Status : 400
+Response header
+ Content-type : application/json
+ Response body
+ Parameters
+o message : string
+
+
+
+
+Status : 401
+Response header
+ Content-type : text/html
+
+
+
+POST /pickup/send: are ca rezultat introducerea unei noi comenzi in baza de
+date si obtinerea numarului de comanda
+Request header
+Authorization: Basic <base64 user:password> o Content-Type: application/json
+Request body
+
+
+
+JSON : { "dataCollect":"", "hStartCollect":"", "hEndCollect":"", "colete":"", "paleti":"",
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+13
+
+"greutate":"", "volum":"", "judet":"", "localitate":"", "adresa":"", "contact":"", "telefon":"",
+"observatii":"" }
+o Parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcId : required : integer
+dataCollect : required : string : yyyy-mm-dd
+hStartCollect : required : integer
+hEndCollect : required : integer
+colete : required : integer
+paleti : required : integer
+greutate : required : integer
+volum : optional : integer0
+judet : optional : string
+localitate : optional : string
+adresa : optional : string
+contact : optional : string
+telefon : optional : string
+observatii : optional : string
+
+Response :
+Status : 201
+Response header
+o Content-type : application/json 
+Response body
+JSON : { pickupId : numeric }
+Status : 404
+Response header
+o Content-type : application/json
+o Response body
+Parameters
+• message : "not found"
+Status : 400
+Response header
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+14
+
+o Content-type : application/json
+Response body
+o Parameters
+message : string
+Status : 401
+Response header
+o Content-type : text/html
+
+POST /pickup/sendForPc : are ca rezultat introducerea unei noi comenzi in
+baza de date si obtinerea numarului de comanda pentru un punct de lucru
+(identificat cu pcId = id-ul punctului de lucru la Curier Dragon Star)
+Request header
+Authorization: Basic <base64 user:password> o Content-Type: application/json
+Request body
+JSON : {"pcId":"", "dataCollect":"", "hStartCollect":"", "hEndCollect":"", "colete":"",
+
+"paleti":"", "greutate":"", "volum":"", "judet":"", "localitate":"", "adresa":"", "contact":"", "telefon":"",
+"observatii":"" }
+o Parameters
+pcId : required : integer
+dataCollect : required : string : yyyy-mm-dd
+hStartCollect : required : integer
+hEndCollect : required : integer
+colete : required : integer
+paleti : required : integer
+greutate : required : integer
+volum : optional : integer0
+judet : optional : string
+localitate : optional : string
+adresa : optional : string
+contact : optional : string
+telefon : optional : string
+observatii : optional : string
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+15
+
+Response :
+Status : 201
+Response header
+o Content-type : application/json 
+Response body
+JSON : { pickupId : numeric }
+Status : 404
+Response header
+o Content-type : application/json
+o Response body
+Parameters
+• message : "not found"
+Status : 400
+Response header
+o Content-type : application/json
+Response body
+o Parameters
+message : string
+Status : 401
+Response header
+o Content-type : text/html
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+16
+
+Addendum
+Documentatie tehnica :
+URL : https://app.curierdragonstar.ro :
+SSL + IP : required
+Authentication : application only Fiecare request
+trebuie sa includa :
+ un header Authorization cu valoarea Basic <base64 user:password>
+ un header Content-Type
+
+Resurse :
+POST /awb/sendForPc : are ca rezultat introducerea unei noi expeditii pentru un punct de lucru (identificat
+cu pcId = id-ul punctului de lucru la Curier Dragon Star) in baza de date si obtinerea numarului de AWB
+Request :
+
+ Request header
+o Authorization: Basic <base64 user:password>
+o Content-Type: application/json
+ Request body
+o {"pcId" : "", "judet":"", "localitate":"", "destinatar":"", "contact":"", "telefon":"",
+"adresa":"", "tipExpeditie":"", "nrColete":"", "greutate":"",
+"platitorEsteDestinatarul":"", "valoareRamburs":"", "tipPlata":"",
+"valoareAsigurare":"", "ret_doc":"", "ret_nt":"","ret_amb":"",
+"tarifUrgenta":"", "tarifSambata":"", "livrareSediu":"","observatii":"",
+"deschidereColet":"", "sms":""}
+o Parameters
+ pcId : required : integer
+ judet : required : string
+ localitate : required : string
+ destinatar : required : string
+ contact : optional : string
+ telefon : required : string
+ adresa : required : string
+ tipExpeditie : required : fixed : plic | colet | palet
+ nrColete : required if tipExpeditie = colet: numeric
+ greutate : required if tipExpeditie = colet | palet: numeric
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+platitorEsteDestinatarul : optional : fixed : 0|1 : default : 0
+valoareRamburs : optional : decimal : default : 0.00
+tipPlata : optional : fixed : cash | bo | cec | cont : default : cash
+valoareAsigurare : optional : decimal : default : 0.00
+ret_doc : optional : fixed : 0 | 1 : default : 0
+ret_nt : optional : fixed : 0 | 1 : default : 0
+ret_amb : optional : fixed : 0 | 1 : default : 0
+tarifUrgenta : optional : fixed : 0 | 1 : default : 0
+tarifSambata : optional : fixed : 0 | 1 : default : 0
+livrareSediu : optional : fixed : 0 | 1 : default : 0
+observatii : optional : string
+deschidereColet : optional : fixed : 0 | 1 : default : 0
+sms : optional : fixed : 0 | 1 : default : 0
+
+Response :
+
+ Status : 201
+ Response header
+o Content-type : application/json
+ Response body
+o {"awb":"60872649","total_net":52.58}
+o Parameters
+ awb : numeric
+ total_net : decimal
+
+ Status : 404
+ Response header
+o Content-type : application/json
+o Response body
+ Parameters
+ message : "not found"
+
+ Status : 400
+ Response header
+o Content-type : application/json
+ Response body
+o Parameters
+ message : string
+ Status : 401
+ Response header
+o Content-type : text/html
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+
+18
+
+POST /awb/costForPc : are ca rezultat obtinerea costurilor de expeditie pentru un punct
+de lucru (identificat cu pcId = id-ul punctului de lucru la Curier Dragon Star)
+Request :
+
+ Request header
+o Authorization: Basic <base64 user:password>
+o Content-Type: application/json
+ Request body
+o {"pcId" : "", "judet":"", "localitate":"", "destinatar":"",
+
+"tipExpeditie":"", "nrColete":"", "greutate":"",
+"platitorEsteDestinatarul":"", "valoareRamburs":"",
+"valoareAsigurare":"", "ret_doc":"",
+"ret_nt":"","ret_amb":"", "tarifUrgenta":"",
+"tarifSambata":"", "livrareSediu":"",
+"deschidereColet":"","sms":""}
+o Parameters
+ pcId : required : integer
+ judet : required : string
+ localitate : required : string
+ destinatar : required : string
+ tipExpeditie : required : fixed : plic | colet | palet
+ nrColete : required if tipExpeditie = colet: numeric
+ greutate : required if tipExpeditie = colet | palet: numeric
+ platitorEsteDestinatarul : optional : fixed : 0|1 : default : 0
+ valoareRamburs : optional : decimal : default : 0.00
+ valoareAsigurare : optional : decimal : default : 0.00
+ ret_doc : optional : fixed : 0 | 1 : default : 0
+ ret_nt : optional : fixed : 0 | 1 : default : 0
+ ret_amb : optional : fixed : 0 | 1 : default : 0
+ tarifUrgenta : optional : fixed : 0 | 1 : default : 0
+ tarifSambata : optional : fixed : 0 | 1 : default : 0
+ livrareSediu : optional : fixed : 0 | 1 : default : 0
+ deschidereColet : optional : fixed : 0 | 1 : default : 0
+ sms : optional : fixed : 0 | 1 : default : 0
+
+Response :
+
+ Status : 200
+ Response header
+o Content-type : application/json
+ Response body
+o {"baza":9,"costKm":18.4,"costGreutate":13,"costAsigurare":2,"esteTa
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+19
+
+rifStandard":0,"tva":10.18,"totalNet":52.58}
+o Parameters
+ baza: decimal
+ costKm: decimal
+ costGreutate: decimal
+ costAsigurare: decimal
+ esteTarifStandard: fixed : 0 | 1
+ tva: decimal
+ totalNet: decimal
+
+ Status : 404
+ Response header
+o Content-type : application/json
+o Response body
+ Parameters
+ message : "not found"
+
+ Status : 400
+ Response header
+o Content-type : application/json
+ Response body
+o Parameters
+ message : string
+
+ Status : 401
+ Response header
+o Content-type : text/html
+GET /master/pcs : se obtine lista de puncte de lucru
+Request :
+
+ Request header
+o Authorization: Basic <base64 user:password>
+o Content-Type: application/json
+ Request
+body Response :
+
+ Status : 200
+ Response header
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+20
+
+o Content-type : application/json
+ Response body
+o { "pcId": 2258586, "nume": "nume pcId", "judet": "Bucuresti",
+"localitate": "Bucuresti", "adresa": "adresa pcId" }
+o Parameters
+ pcId: integer
+ nume: string
+ judet: string
+ localitate: string
+ adresa: string
+
+ Status : 400
+ Response header
+o Content-type : application/json
+ Response body
+o Parameters
+ message : string
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+21
+
+Metode print ZPL
+Pentru printare zpl (etichete 100x150) 203dpi se apeleaza metoda
+GET awb/zpl/:awb/:nb
+:awb : integer, mandatory
+:nb : integer, mandatory
+-
+
+unde ":awb" este nr. nt si ":nb" este numarul de etichete pe care vrea sa il obtina
+
+Exemplu : vreau sa printez expeditia xxxxxxxx care are 4 colete
+GET awb/zpl/ xxxxxxxx /1 si obtin label zpl pentru master
+GET awb/zpl/ xxxxxxxx /2 si obtin label zpl pentru primul puisor
+GET awb/zpl/ xxxxxxxx /3 si obtin label zpl pentru al doilea puisor
+GET awb/zpl/ xxxxxxxx /4 si obtin label zpl pentru al treilea puisor
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+22
+
+Apendix metode:
+GET /judete : are ca rezultat obtinerea listei de judete din Romania
+GET /localitati/:judet : are ca rezultat obtinerea listei de localitati din judetul cu codul «:judet »
+GET /localitatikm/:judet
+POST /awb/send : are ca rezultat introducerea unei noi expeditii in baza de date si obtinerea
+numarului de AWB
+POST /awb/cost : are ca rezultat obtinerea costurilor de expeditie
+GET /awb/print/:awb : are ca rezultat obtinerea pdf-ului
+DELETE /awb/:awb : are ca rezultat stergerea awb-ului daca nu s-a creat borderou si daca timpul
+scurs de la introducerea respectivei expeditii nu depaseste 30 minute
+
+POST /borderou/make : are ca rezultat crearea unui borderou
+GET /borderou/print/:borderou : are ca rezultat obtinerea pdf-ului borderoului cu numarul
+:borderou
+GET /awb/status/:awb : are ca rezultat obtinerea ultimului status pentru expeditia cu numarul
+«:awb»
+POST /pickup/send : are ca rezultat introducerea unei noi comenzi in baza de date si obtinerea numarului de
+comanda.
+POST /pickup/sendForPc : are ca rezultat introducerea unei noi comenzi in baza de date si obtinerea
+numarului de comanda pentru un punct de lucru (identificat cu pcId = id-ul punctului de lucru la
+Curier Dragon Star)
+
+====
+POST /awb/sendForPc
+POST /awb/costForPc : are ca rezultat obtinerea costurilor de expeditie pentru un punct de lucru
+(identificat cu pcId = id-ul punctului de lucru la Curier Dragon Star)
+GET /master/pcs
+GET awb/zpl/:awb/:nb
+=====
+
+API RESTFUL DRAGON STAR CURIER – V2.0.5
+23
+
+
