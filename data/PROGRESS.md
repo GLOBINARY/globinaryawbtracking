@@ -48,6 +48,7 @@
 - DSC status-to-PrestaShop-order-state mapping UI/config is not yet finalized (current status update works, but mapping parity with DPD/Sameday is pending).
 
 ## Next (Planned)
+6. README improvement: keep bilingual documentation (EN + RO) for OSS discoverability and local usability.
 1. Implement Sameday manual status refresh using `/api/client/parcel/{awb}/status-history`.
 2. Keep hourly cron status updates on `status-sync` / `xb-status-sync` with 2h window.
 3. Finalize DPD print response handling after one more live payload capture.
