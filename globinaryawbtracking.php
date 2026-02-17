@@ -22,7 +22,7 @@ class Globinaryawbtracking extends Module
     {
         $this->name = 'globinaryawbtracking';
         $this->tab = 'shipping_logistics';
-        $this->version = '1.6.9';
+        $this->version = '1.6.10';
         $this->author = 'Globinary';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -1144,32 +1144,24 @@ public function hookDisplayAdminOrderTabContent($params)
                 return json_encode(['success' => false, 'message' => $credentials['message']]);
             }
 
-            $resp = $this->requestDscApi('DELETE', 'https://app.curierdragonstar.ro/awb/' . urlencode($mainAwb), null, $credentials);
-            if (!$resp['success']) {
-                return json_encode([
-                    'success' => false,
-                    'message' => $resp['message'],
-                ]);
+            $deletedRemotely = false;
+            $lastDeleteError = '';
+            foreach ($this->buildDscAwbCandidates($mainAwb) as $candidateAwb) {
+                $resp = $this->requestDscDeleteAwb($candidateAwb, $credentials);
+                if (!empty($resp['success'])) {
+                    $deletedRemotely = true;
+                    break;
+                }
+                if (!empty($resp['message'])) {
+                    $lastDeleteError = (string)$resp['message'];
+                }
             }
 
-            $json = $resp['data'] ?? array();
-            $ok = false;
-            if (is_array($json)) {
-                if (isset($json['success']) && $json['success']) {
-                    $ok = true;
+            if (!$deletedRemotely) {
+                if ($lastDeleteError === '') {
+                    $lastDeleteError = $this->l('Eroare ștergere AWB DSC.');
                 }
-                if (!$ok && isset($json['message']) && trim((string)$json['message']) !== '') {
-                    $msgLower = Tools::strtolower((string)$json['message']);
-                    if (strpos($msgLower, 'sters') !== false || strpos($msgLower, 'sucs') !== false || strpos($msgLower, 'deleted') !== false) {
-                        $ok = true;
-                    }
-                }
-            }
-            if (!$ok) {
-                return json_encode([
-                    'success' => false,
-                    'message' => !empty($json['message']) ? (string)$json['message'] : $this->l('Eroare ștergere AWB DSC.'),
-                ]);
+                return json_encode(['success' => false, 'message' => $lastDeleteError]);
             }
         } else {
             $credentials = $this->getDpdCredentials();
@@ -2088,6 +2080,87 @@ public function calculatePrice()
         }
 
         return array('success' => true, 'data' => $data, 'debug' => $debug);
+    }
+
+    private function buildDscAwbCandidates($awb)
+    {
+        $raw = trim((string)$awb);
+        $candidates = array($raw);
+
+        // Common legacy/display formats:
+        // - prefix form: DSC12345678 / EE2026...
+        // - numeric form only.
+        if (preg_match('/^[A-Za-z]+(.+)$/', $raw, $m) && !empty($m[1])) {
+            $candidates[] = trim((string)$m[1]);
+        }
+        $digitsOnly = preg_replace('/\D+/', '', $raw);
+        if (is_string($digitsOnly) && $digitsOnly !== '') {
+            $candidates[] = $digitsOnly;
+        }
+
+        $filtered = array();
+        foreach ($candidates as $candidate) {
+            if (!is_string($candidate)) {
+                continue;
+            }
+            $candidate = trim($candidate);
+            if ($candidate === '') {
+                continue;
+            }
+            $filtered[$candidate] = $candidate;
+        }
+
+        return array_values($filtered);
+    }
+
+    private function requestDscDeleteAwb($awb, $credentials)
+    {
+        $url = 'https://app.curierdragonstar.ro/awb/' . urlencode((string)$awb);
+        $auth = base64_encode($credentials['user'] . ':' . $credentials['pass']);
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Basic ' . $auth,
+                'Content-Type: application/x-www-form-urlencoded',
+                'Accept: application/json',
+            ),
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            CURLOPT_CONNECTTIMEOUT => 20,
+            CURLOPT_TIMEOUT => 45,
+            CURLOPT_POSTFIELDS => '',
+        ));
+
+        $response = curl_exec($ch);
+        $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlErr = curl_error($ch);
+        curl_close($ch);
+
+        if ($response === false || $httpCode < 200 || $httpCode >= 300) {
+            return array(
+                'success' => false,
+                'message' => $curlErr ? $curlErr : ($this->l('DSC API a returnat eroare: ') . (string)$response),
+            );
+        }
+
+        $json = json_decode((string)$response, true);
+        if (!is_array($json)) {
+            return array('success' => false, 'message' => $this->l('Răspuns invalid de la DSC la ștergere AWB.'));
+        }
+
+        $message = trim((string)($json['message'] ?? ''));
+        $msgLower = Tools::strtolower($message);
+        if ($msgLower === 'deleted' || strpos($msgLower, 'deleted') !== false || strpos($msgLower, 'sters') !== false) {
+            return array('success' => true, 'message' => $message);
+        }
+
+        if ($message === '') {
+            $message = $this->l('Ștergerea AWB DSC nu a fost confirmată de API.');
+        }
+
+        return array('success' => false, 'message' => $message);
     }
 
     private function validateDpdRequest($data)
